@@ -36,7 +36,7 @@ app.engine(
 app.set("view engine", ".hbs");
 
 //doi lai duong dan mac dinh cua handlebars
-app.set("views", path.join(__dirname, "resources/views"));
+            app.set("views", path.join(__dirname, "resources/views"));
 
 //Routes init
 route(app);
