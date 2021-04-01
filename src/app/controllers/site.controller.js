@@ -1,14 +1,33 @@
+const Course = require("../models/course.model");
+const { mutipleMongooseToObject } = require('../../util/mongoose');
 //controllers viet chuc nang
-class NewsController {
+class SiteController {
     // [GET] /
-    home(req, res) {
-        res.render('home');
+    home(req, res, next) {
+        // res.render("home");
+        // Course.find({}, function (err, courses) {
+        //     if (!err) {
+        //         res.json(courses);
+        //     } else {
+        //         next(err);
+        //     };
+        // });
+
+        Course.find({}).then(courses =>{
+            // courses = courses.map(course=>course.toObject()); //viet cach nay cung dc
+            // res.json(courses);
+            res.render('home', {
+                courses : mutipleMongooseToObject(courses)
+            });
+        }).catch(next); // next = <err => next(err)>
+        
+
     }
 
     // [GET] /search
     search(req, res) {
-        res.render('search');
+        res.render("search");
     }
 }
 
-module.exports = new NewsController();
+module.exports = new SiteController();
