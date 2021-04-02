@@ -1,5 +1,4 @@
 //controllers viet chuc nang
-//
 class NewsController {
     // [GET] /news
     index(req, res) {
