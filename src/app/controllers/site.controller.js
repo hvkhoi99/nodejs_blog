@@ -1,4 +1,4 @@
-const Course = require("../models/course.model");
+const Course = require('../models/course.model');
 const { mutipleMongooseToObject } = require('../../util/mongoose');
 //controllers viet chuc nang
 class SiteController {
@@ -13,20 +13,19 @@ class SiteController {
         //     };
         // });
 
-        Course.find({}).then(courses =>{
-            // courses = courses.map(course=>course.toObject()); //viet cach nay cung dc
-            // res.json(courses);
-            res.render('home', {
-                courses : mutipleMongooseToObject(courses)
-            });
-        }).catch(next); // next = <err => next(err)>
-        
-
+        Course.find({})
+            .then((courses) => {
+                // courses = courses.map(course=>course.toObject()); //viet cach nay cung dc
+                res.render('home', {
+                    courses: mutipleMongooseToObject(courses),
+                });
+            })
+            .catch(next); // next = <err => next(err)>
     }
 
     // [GET] /search
     search(req, res) {
-        res.render("search");
+        res.render('search');
     }
 }
 
