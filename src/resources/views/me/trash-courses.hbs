@@ -1,7 +1,7 @@
 <div class="mt-4">
     <div>
-        <h3>Khóa học của tôi</h3>
-        <a href="/me/trash/courses">Thùng rác</a>
+        <a href="/me/stored/courses">Danh sách khóa học</a>
+        <h3>Thùng rác</h3>
     </div>
     <table class="table mt-4">
         <thead>
@@ -20,16 +20,16 @@
                 <td>{{this.level}}</td>
                 <td>{{this.createdAt}}</td>
                 <td>
-                    <a href="/courses/{{this._id}}/edit" class="btn btn-primary">Sửa</a>
+                    <a href="" class="btn btn-primary btn-restore" data-id="{{this._id}}">Khôi phục</a>
                     <a href="" class="btn btn-danger" data-id="{{this._id}}" data-toggle="modal"
-                        data-target="#delete-course-modal">Xóa</a>
+                        data-target="#delete-course-modal">Xóa vĩnh viễn</a>
                 </td>
             </tr>
             {{else}}
             <tr>
                 <td colspan="5" class="text-center">
-                    Bạn chưa đăng khóa học nào.
-                    <a href="/courses/create">Đăng khóa học</a>
+                    Thùng rác trống.
+                    <a href="/me/stored/courses">Danh sách khóa học</a>
                 </td>
             </tr>
             {{/each}}
@@ -47,37 +47,48 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Bạn chắc chắn muốn xóa khóa học?</p>
+                <p>Sau khi thực hiện hành động, khóa học sẽ bị xóa vĩnh viễn. Bạn vẫn muốn xóa?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-danger" id="btn-delete-course">Xóa</button>
+                <button type="button" class="btn btn-danger" id="btn-delete-course">Xóa vĩnh viễn</button>
             </div>
         </div>
     </div>
 </div>
 
-{{!-- can mot form de thuc hien submit --}}
 <form name="delete-course-form" method="POST"></form>
+<form name="restore-course-form" method="POST"></form>
 
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
         var courseId;
         deleteForm = document.forms['delete-course-form']; //lay ra form
+        restoreForm = document.forms['restore-course-form']; //lay ra trash
         var btnDeleteCourse = document.getElementById('btn-delete-course');
-        
-        //Khi click vao button xoa trong bang
+        //thay vi dung vong lap loop qua tat ca cac nut de lay ra nut restore thi chi can dung jquery
+        var btnRestore = $('.btn-restore'); // get ra tat ca cac nut restore
+
+        //Khi click vao button xoa trong trash courses
         $('#delete-course-modal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             courseId = button.data('id');
         })
 
-        // soft delete
+        //xoa that
         btnDeleteCourse.onclick = function () {
-            deleteForm.action = '/courses/' + courseId + '?_method=DELETE'; //set lai action route cho delForm
+            deleteForm.action = '/courses/' + courseId + '/force?_method=DELETE'; //set lai action route cho delForm
             deleteForm.submit();
         }
+
+        //click -> restore
+        btnRestore.click(function (e) {
+            e.preventDefault();
+            var trashCourseId = $(this).data('id'); //dung jquery lay ra element cua btnRestore
+            restoreForm.action = '/courses/' + trashCourseId + '/restore?_method=PATCH'; //set lai action route cho resForm
+            restoreForm.submit();
+        })
     })
 
 </script>
