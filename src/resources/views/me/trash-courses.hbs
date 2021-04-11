@@ -9,7 +9,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Level</th>
-                <th scope="col" colspan="2">CreatedAt</th>
+                <th scope="col" colspan="2">DeletedAt</th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +18,7 @@
                 <th scope="row">{{sumIndex @index 1}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.level}}</td>
-                <td>{{this.createdAt}}</td>
+                <td>{{this.deletedAt}}</td>
                 <td>
                     <a href="" class="btn btn-primary btn-restore" data-id="{{this._id}}">Khôi phục</a>
                     <a href="" class="btn btn-danger" data-id="{{this._id}}" data-toggle="modal"

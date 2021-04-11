@@ -1,7 +1,6 @@
 //controllers viet chuc nang
 const Course = require('../models/course.model');
 const { mongooseToObject } = require('../../util/mongoose');
-
 class CourseController {
     // [GET] /courses/:slug
     show(req, res, next) {
@@ -69,6 +68,19 @@ class CourseController {
         Course.deleteOne({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
+    }
+
+    // [POST] /courses/handle-form-actions
+    handleFormActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                Course.delete({ _id: { $in: req.body.courseIds } }) //mongoose dùng deleteOne, còn mongoose-delete dùng delete
+                    .then(() => res.redirect('back'))
+                    .catch(next);
+                break;
+            default:
+                res.json({ message: 'Action is invalid' });
+        }
     }
 }
 
