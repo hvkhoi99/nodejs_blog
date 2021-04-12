@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
 const mongooseDelete = require('mongoose-delete');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema(
     {
+        _id: { type: Number },
         name: { type: String, required: true },
         description: { type: String, maxLength: 600 },
         image: { type: String },
@@ -15,6 +17,7 @@ const CourseSchema = new Schema(
         // mac dinh neu trung no se them 1 id ngau nhien vao sau slug do
     },
     {
+        _id: false,
         timestamps: true,
     },
 );
@@ -31,6 +34,7 @@ CourseSchema.query.sortable = function (req) {
 };
 
 mongoose.plugin(slug);
+CourseSchema.plugin(AutoIncrement);
 CourseSchema.plugin(mongooseDelete, {
     deletedAt: true,
     overrideMethods: 'all',
